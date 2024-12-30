@@ -1,26 +1,33 @@
 import os
 
-def rename_weapon_files(directory):
-    # Parcourt tous les fichiers dans le répertoire
-    for filename in os.listdir(directory):
-        # Vérifie si le fichier commence par "weapon" (insensible à la casse)
-        if filename.lower().startswith("weapon"):
-            # Nouveau nom en majuscules
-            new_name = filename.upper()
-            
-            # Chemins complets pour renommage
-            old_path = os.path.join(directory, filename)
-            new_path = os.path.join(directory, new_name)
+def rename_images_in_directory(directory_path):
+    """
+    Renames all image files in the specified directory if their extension is `.PNG`.
+    The extension is changed to `.png`.
 
-            # Renommage du fichier
-            os.rename(old_path, new_path)
-            print(f"Renamed: {filename} -> {new_name}")
+    :param directory_path: The path of the directory to scan.
+    """
+    try:
+        # List all files in the directory
+        files = os.listdir(directory_path)
 
-# Spécifiez le répertoire contenant les fichiers
-directory_path = input("Enter the directory path: ").strip()
+        for file_name in files:
+            # Check if the file ends with '.PNG'
+            if file_name.endswith('.PNG'):
+                # Construct full file paths
+                old_file_path = os.path.join(directory_path, file_name)
+                new_file_name = file_name[:-4] + '.png'
+                new_file_path = os.path.join(directory_path, new_file_name)
 
-# Vérifie si le répertoire existe
-if os.path.isdir(directory_path):
-    rename_weapon_files(directory_path)
-else:
-    print(f"Invalid directory: {directory_path}")
+                # Rename the file
+                os.rename(old_file_path, new_file_path)
+                print(f"Renamed: {file_name} -> {new_file_name}")
+
+    except FileNotFoundError:
+        print("Error: Directory not found. Please provide a valid path.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+# Example usage
+directory_path = r"C:/Users/User/Documents/GitHub/image/items"  # Replace this with your directory path
+rename_images_in_directory(directory_path)
